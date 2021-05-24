@@ -1,0 +1,25 @@
+package com.day1.callback.web
+
+import com.day1.callback.service.imp.ImpService
+import com.day1.callback.web.dto.ImpRequestDto
+import com.day1.callback.web.dto.ImpResponseDto
+import lombok.RequiredArgsConstructor
+import org.springframework.web.bind.annotation.*
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/pg")
+class ImpApiController(val impService: ImpService) {
+
+    @GetMapping("/")
+    fun index(): String {
+        val hello = "Hello world"
+        return hello
+    }
+
+    @PostMapping("/imp")
+    fun iamportCallbackHandler(@RequestBody impRequestDto: ImpRequestDto): ImpResponseDto {
+
+        return impService.callbackData(impRequestDto)
+    }
+}
