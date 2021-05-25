@@ -10,15 +10,19 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.exchange
 import org.springframework.web.client.postForEntity
 
 @ExtendWith(SpringExtension::class)
@@ -28,33 +32,40 @@ import org.springframework.web.client.postForEntity
 */
 @AutoConfigureMockMvc //설정 필요
 class ImpApiControllerTest @Autowired constructor(
-                           val mockMvc: MockMvc) {
+                           val mockMvc: MockMvc,
+                           val restTemplate: TestRestTemplate //test code 에서는 TestRestTemplate 사용
+) {
 
     @LocalServerPort private var port: Int = 0
 
     @Test
-    fun `day1 callback`() {
+    fun `call-local-call-node-callback-imp`() {
         //given
-        var impRequestDto = ImpRequestDto("imp_123","m_123",status = "paid")
-
+        var impRequestDto = ImpRequestDto("imp_1234567890",
+            "merchant_1234567890",
+            status = "ready")
         var url = "http://localhost:3001/imp.do"
+        val url2 ="http://localhost:8002/pg/imp"
 
         //when
-        val entity : ResponseEntity<String> = RestTemplate().postForEntity(url,impRequestDto)
-        val impResponseDto = entity.body?.let { jacksonObjectMapper().readValue<ImpResponseDto>(it) }
-
-
-        assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-
-        if (impResponseDto != null) {
-            assertThat(impResponseDto.imp_success).isEqualTo(true)
-            assertThat(impResponseDto.imp_uid).isEqualTo(impRequestDto.imp_uid)
-            assertThat(impResponseDto.merchant_uid).isEqualTo(impRequestDto.merchant_uid)
-        }
+        val entity : ResponseEntity<HashMap<String, Object>> = restTemplate.exchange(
+            RequestEntity.post(url2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(impRequestDto)
+        )
+        println(entity.body?.get("body"))
+        //val entity : ResponseEntity<String> = RestTemplate().postForEntity(url2,impRequestDto)
+        //val impResponseDto = entity.body?.let { jacksonObjectMapper().readValue<ImpResponseDto>(it) }
+//        if (impResponseDto != null) {
+//            assertThat(impResponseDto.imp_success).isEqualTo(true)
+//            assertThat(impResponseDto.imp_uid).isEqualTo(impRequestDto.imp_uid)
+//            assertThat(impResponseDto.merchant_uid).isEqualTo(impRequestDto.merchant_uid)
+//        }
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.ACCEPTED)
     }
 
     @Test
-    fun `call-local-call-node-callback-iamport`() {
+    fun `day1 callback api`() {
         //given
         val impRequestDto = ImpRequestDto("imp_123","m_123",status = "paid")
         val url = "http://localhost:" + port + "/pg/imp"

@@ -4,5 +4,5 @@ data class ImpResponseDto (
     var imp_uid: String,
     var merchant_uid: String,
     var status: String,
-    var imp_success: Boolean
+    var imp_success: Boolean?
     )
