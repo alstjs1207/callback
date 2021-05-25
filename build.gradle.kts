@@ -21,13 +21,17 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.projectlombok:lombok")
+	//Logging
+	implementation("io.github.microutils:kotlin-logging:1.12.5")
 	//implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test")
 	//testImplementation("com.h2database:h2")
+	testImplementation("com.ninja-squad:springmockk:3.0.1") {
+		exclude(module = "mockito-core")
+	}
 
-	//Logging
-	implementation("io.github.microutils:kotlin-logging:1.12.5")
 }
 
 tasks.withType<KotlinCompile> {
