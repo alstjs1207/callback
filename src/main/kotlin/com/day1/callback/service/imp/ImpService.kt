@@ -29,6 +29,12 @@ class ImpService {
             "http://localhost:3001/imp.do",impRequestDto)
 
         logger.info { "entity data $entity" }
+
+
+        //성공
+
+        //실패
+
         return entity.body?.let { jacksonObjectMapper().readValue(it) }
     }
 }
