@@ -17,17 +17,20 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	//jackson
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.projectlombok:lombok")
 	//Logging
 	implementation("io.github.microutils:kotlin-logging:1.12.5")
+	//jpa
 	//implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
+	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test")
 	//testImplementation("com.h2database:h2")
+	//mockk
 	testImplementation("com.ninja-squad:springmockk:3.0.1") {
 		exclude(module = "mockito-core")
 	}
