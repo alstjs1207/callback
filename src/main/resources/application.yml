@@ -1,2 +1,5 @@
 server:
   port: 9090
+
+iamport:
+  endpoint: "http://localhost:8002/pg/imp"
