@@ -26,6 +26,27 @@
 - Example
 
 ```
+=======
+
+## Test Case
+
+### ImpApiControllerTest.kt
+
+1. day1 callback iamport api
+- path `POST` `/pg/imp`
+
+- Parameters
+
+|Parameters|Name|Description|
+|------|---|---|
+|imp_uid|||
+|merchant_uid|||
+|status|상태|테스트 : ready|
+
+- Example
+
+```aidl
+>>>>>>> da9d54c (api callback check)
 {
     "imp_uid":"imp_1234567890",
     "merchant_id":"merchant_1234567890",
@@ -154,8 +175,5 @@ $ java -jar callback-0.0.1-SNAPSHOT.jar
 - kakao sync
 - kollus
 - db 연동(jdbc)
-
-
-
 
 
