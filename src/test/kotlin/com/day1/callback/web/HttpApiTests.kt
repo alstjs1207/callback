@@ -1,9 +1,8 @@
-package com.day1.callback
+package com.day1.callback.web
 
 import com.day1.callback.web.dto.ImpRequestDto
 import com.day1.callback.web.dto.ImpResponseDto
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -22,8 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 // top-level Functions
 val mapper = ObjectMapper()
-fun Object.convert2ObjectString(): String = mapper.writeValueAsString(this)
-fun ResponseEntity<HashMap<String, Object>>.convert2MapBody(): Object? = this.body?.get("body")
+fun Any.convert2ObjectString(): String = mapper.writeValueAsString(this)
+fun ResponseEntity<HashMap<String, Any>>.convert2MapBody(): Any? = this.body?.get("body")
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //BeforeAll, AfterAll 사용
 @ExtendWith(SpringExtension::class)
@@ -44,7 +43,7 @@ class HttpApiTests @Autowired constructor(
         val url2 ="http://localhost:8002/pg/imp"
 
         //when
-        val entity : ResponseEntity<HashMap<String, Object>> = restTemplate.exchange(
+        val entity : ResponseEntity<HashMap<String, Any>> = restTemplate.exchange(
             RequestEntity.post(url2)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(impRequestDto)

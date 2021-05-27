@@ -18,8 +18,8 @@ class ImpApiController(val impService: ImpService) {
     }
 
     @PostMapping("/imp")
-    fun iamportCallbackHandler(@RequestBody impRequestDto: ImpRequestDto): ImpResponseDto? {
+    fun iamportCallbackHandler(@RequestBody impRequestDto: ImpRequestDto) {
         logger.info { "controller!!!" }
-        return impService.callbackData(impRequestDto)
+        impService.callbackData(impRequestDto)
     }
 }

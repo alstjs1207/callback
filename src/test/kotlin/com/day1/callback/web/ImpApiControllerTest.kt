@@ -1,4 +1,4 @@
-package com.day1.callback
+package com.day1.callback.web
 
 import com.day1.callback.web.dto.ImpRequestDto
 import com.day1.callback.web.dto.ImpResponseDto
@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -27,6 +28,10 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 import org.springframework.web.client.postForEntity
 
+/*
+    local restful API Test
+ */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) //BeforeAll, AfterAll 사용
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 /*테스트 프레임워크에서의 생성자 매개변수 관리는 스프링 컨테이너가 아닌Jupiter가 담당
@@ -34,8 +39,7 @@ import org.springframework.web.client.postForEntity
 */
 @AutoConfigureMockMvc //설정 필요
 class ImpApiControllerTest @Autowired constructor(
-                           val mockMvc: MockMvc,
-                           val restTemplate: TestRestTemplate //test code 에서는 TestRestTemplate 사용
+                           val mockMvc: MockMvc
 ) {
 
     @LocalServerPort private var port: Int = 0
@@ -48,7 +52,7 @@ class ImpApiControllerTest @Autowired constructor(
     @Test
     fun `day1 callback iamport api`() {
         //given
-        val impRequestDto = ImpRequestDto("imp_123","m_123","paid")
+        val impRequestDto = ImpRequestDto("imp_1234567890","merchant_1234567890","ready")
         val url = "http://localhost:" + port + "/pg/imp"
         //when
         mockMvc.perform(MockMvcRequestBuilders
