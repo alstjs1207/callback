@@ -3,3 +3,4 @@ server:
 
 iamport:
   endpoint: "http://localhost:8002/pg/imp"
+  token: ""

@@ -54,6 +54,7 @@ class ImpApiControllerTest @Autowired constructor(
         //given
         val impRequestDto = ImpRequestDto("imp_1234567890","merchant_1234567890","ready")
         val url = "http://localhost:" + port + "/pg/imp"
+
         //when
         mockMvc.perform(MockMvcRequestBuilders
             .post(url)
