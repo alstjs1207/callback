@@ -18,12 +18,16 @@ val mapper = ObjectMapper()
 fun Any.convert2ObjectString(): String = mapper.writeValueAsString(this)
 fun ResponseEntity<HashMap<String, Any>>.convert2MapBody(): Any? = this.body?.get("body")
 
+/**
+ * 결제 서비스
+ */
+
 @Service
 class ImpService (private val impConfigProperties: ImpConfigProperties){
 
     fun callbackData(dto: ImpRequestDto) {
         logger.info { "service" }
-        //ip Check
+        //ip Check todo Spring Security
 
         //callback day1
         var resDto = callbackDay1(dto)
@@ -32,9 +36,10 @@ class ImpService (private val impConfigProperties: ImpConfigProperties){
     }
 
     fun callbackDay1(impRequestDto: ImpRequestDto): ImpResponseDto {
-        //val restTemplate: RestTemplate()
+
         val entity : ResponseEntity<HashMap<String, Any>> = RestTemplate().exchange(
             RequestEntity.post(impConfigProperties.endpoint)
+                //.header("Authorization",impConfigProperties.token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(impRequestDto)
         )

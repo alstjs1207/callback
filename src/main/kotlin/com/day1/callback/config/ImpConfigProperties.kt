@@ -7,5 +7,6 @@ import org.springframework.stereotype.Component
 @ConstructorBinding
 @ConfigurationProperties(prefix = "iamport")
 data class ImpConfigProperties (
-    val endpoint: String
+    val endpoint: String,
+    val token: String
 )
