@@ -1,7 +1,9 @@
 package com.day1.callback.web
 
+import com.day1.callback.domain.imp.Imp
 import com.day1.callback.web.dto.ImpRequestDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValues
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -14,6 +16,7 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
@@ -33,13 +36,22 @@ class ImpRedisControllerTest @Autowired constructor(
     @BeforeAll
     fun setup() {
         println(">>> Setup")
+//        println(">>> create channels")
+//        val url1 = "http://localhost:" + port + "/pub/imp/bus:0:pg:imp"
+//
+//        //when
+//        mockMvc.perform(
+//            MockMvcRequestBuilders
+//                .put(url1)
+//                .contentType(MediaType.APPLICATION_JSON))
+//            .andExpect(MockMvcResultMatchers.status().isOk)
     }
 
     @Test
     fun `day1 callback iamport api`() {
         //given
-        val impRequestDto = ImpRequestDto("imp_1234567890","merchant_1234567890","ready")
-        val url = "http://localhost:" + port + "/redis/pg/imp"
+        val impRequestDto = Imp("imp_123456789","merchant_123456789","paid")
+        val url = "http://localhost:" + port + "/redis/pg/imp2"
 
         //when
         mockMvc.perform(
@@ -47,6 +59,41 @@ class ImpRedisControllerTest @Autowired constructor(
             .post(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(jacksonObjectMapper().writeValueAsString(impRequestDto)))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+
+        //then
+
+    }
+
+    @Test
+    fun `findAllChannels`() {
+
+        val url = "http://localhost:" + port + "/pub/imp/channels"
+
+        //when
+        val result: MvcResult = mockMvc.perform(
+            MockMvcRequestBuilders
+                .get(url)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        println(result)
+    }
+
+    @Test
+    fun `iamport publish`() {
+
+        //given
+        val impRequestDto = Imp("imp_1234567890","merchant_1234567890","ready")
+        val url = "http://localhost:" + port + "/pub/imp"
+
+        //when
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jacksonObjectMapper().writeValueAsString(impRequestDto)))
             .andExpect(MockMvcResultMatchers.status().isOk)
 
         //then
