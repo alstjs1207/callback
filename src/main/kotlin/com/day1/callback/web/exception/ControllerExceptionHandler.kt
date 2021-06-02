@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ControllerExceptionHandler {
-
     @ExceptionHandler(value = [ErrorException::class])
     fun errorException(ex: ErrorException): ResponseEntity<ErrorEntity> {
         val errorCode: ErrorCode = ex.getErrorCode()
