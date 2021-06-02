@@ -1,10 +1,7 @@
 package com.day1.callback.web
 
-import com.day1.callback.domain.imp.Imp
 import com.day1.callback.web.dto.ImpRequestDto
-import com.day1.callback.web.dto.testDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValues
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
