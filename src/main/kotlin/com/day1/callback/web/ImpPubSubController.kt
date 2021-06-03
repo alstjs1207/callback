@@ -1,8 +1,11 @@
 package com.day1.callback.web
 
+import com.day1.callback.service.exception.ErrorCode
+import com.day1.callback.service.exception.ErrorException
 import com.day1.callback.service.redis.RedisPublisher
-import com.day1.callback.service.redis.RedisSubscriber
+import com.day1.callback.service.redis.impl.RedisMessageDtoSubscriber
 import com.day1.callback.web.dto.ImpRequestDto
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import lombok.RequiredArgsConstructor
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
@@ -17,23 +20,29 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("/callback")
 class ImpPubSubController (val redisPublisher: RedisPublisher,
-                           val redisSubscriber: RedisSubscriber,
+                           val redisMessageDtoSubscriber: RedisMessageDtoSubscriber,
                            val redisMessageListenerContainer: RedisMessageListenerContainer,
                            var channels: HashMap<String, ChannelTopic>) {
 
     @Value("\${spring.redis.channel}")
     private val redisChannel: String? = null
 
+    val om = jacksonObjectMapper()
+
     //TODO 더 좋은 방법이 무엇일까?..
     @PostConstruct
     fun init() {
         logger.info { "init!!!!! $redisChannel" }
         channels = mutableMapOf<String, ChannelTopic>() as HashMap<String, ChannelTopic>
-        //callback에 필요한 channel 등록
-        val keys = redisChannel!!.split(",")
-        for(key in keys) {
-            val channel: ChannelTopic = ChannelTopic(key)
-            channels[key] = channel
+        if( redisChannel !== null) {
+            //callback에 필요한 channel 등록
+            val keys = redisChannel.split(",")
+            for (key in keys) {
+                val channel: ChannelTopic = ChannelTopic(key)
+                channels[key] = channel
+            }
+        } else {
+            throw ErrorException(ErrorCode.NO_REGISTER_CHANNEL)
         }
 
     }
@@ -55,9 +64,12 @@ class ImpPubSubController (val redisPublisher: RedisPublisher,
         val key = "bus:0:pg:imp"
         val channel: ChannelTopic? = channels[key]
         logger.info { "channel : $channel" }
+        var jsonStr = om.writeValueAsString(impRequestDto)
         //TODO null 처리
         if (channel !== null) {
-            redisPublisher.publish(channel, impRequestDto)
+            redisPublisher.publish(channel, jsonStr)
+        } else {
+            throw ErrorException(ErrorCode.NO_CHANNEL)
         }
     }
 
@@ -67,7 +79,7 @@ class ImpPubSubController (val redisPublisher: RedisPublisher,
     @PutMapping("/imp/subscribe/start/{key}")
     fun subMessage(@PathVariable key: String) {
         logger.info { "subscribe start" }
-        redisMessageListenerContainer.addMessageListener(redisSubscriber,  channels[key]!!)
+        redisMessageListenerContainer.addMessageListener(redisMessageDtoSubscriber,  channels[key]!!)
     }
 
     /**
@@ -76,7 +88,7 @@ class ImpPubSubController (val redisPublisher: RedisPublisher,
     @PutMapping("/imp/subscribe/stop/{key}")
     fun unsubMessage(@PathVariable key: String) {
         logger.info { "subscribe stop" }
-        redisMessageListenerContainer.removeMessageListener(redisSubscriber,  channels[key]!!)
+        redisMessageListenerContainer.removeMessageListener(redisMessageDtoSubscriber,  channels[key]!!)
     }
 
     /**
