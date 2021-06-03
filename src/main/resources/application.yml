@@ -1,6 +1,9 @@
 server:
   port: 9090
 
-iamport:
-  endpoint: "http://localhost:8002/pg/imp"
-  token: ""
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    channel: "bus:0:pg:imp,bus:0:ping"
