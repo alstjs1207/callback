@@ -8,6 +8,7 @@
 `application.yml`파일의 `channel`에 있는 정보를 이용하여 구동 시 채널 생성
 
 ---
+## 발행(Pub)
 
 ### iamport 발행
 - path `POST` `/callback/imp/publish`
