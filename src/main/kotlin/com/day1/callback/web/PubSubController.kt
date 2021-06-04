@@ -28,11 +28,22 @@ class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber
     }
 
     /**
+     * 신규 topic 생성
+     */
+    @PutMapping("/channel/{key}")
+    fun createChannel(@PathVariable key: String): String {
+        logger.info { "create $key channel" }
+        val channel: ChannelTopic = ChannelTopic(key)
+        ChannelsAdvice.channels[key] = channel
+        return key
+    }
+
+    /**
      * 구독 시작
      */
     @PutMapping("/subscribe/start/{key}")
     fun subMessage(@PathVariable key: String) {
-        logger.info { "subscribe start" }
+        logger.info { "subscribe $key start" }
         val channel = ChannelsAdvice.channels[key]?: throw ErrorException(ErrorCode.NO_CHANNEL)
         redisMessageListenerContainer.addMessageListener(redisMessageDtoSubscriber,  channel)
     }
@@ -42,18 +53,8 @@ class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber
      */
     @PutMapping("/subscribe/stop/{key}")
     fun unsubMessage(@PathVariable key: String) {
-        logger.info { "subscribe stop" }
+        logger.info { "subscribe $key stop" }
         val channel = ChannelsAdvice.channels[key]?: throw ErrorException(ErrorCode.NO_CHANNEL)
         redisMessageListenerContainer.removeMessageListener(redisMessageDtoSubscriber,  channel)
-    }
-
-    /**
-     * 신규 topic 생성
-     */
-    @PutMapping("/channel/{key}")
-    fun createImpChannel(@PathVariable key: String) {
-        logger.info { "create channel : $key" }
-        val channel: ChannelTopic = ChannelTopic(key)
-        ChannelsAdvice.channels[key] = channel
     }
 }
