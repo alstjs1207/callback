@@ -21,15 +21,15 @@ private val logger = KotlinLogging.logger {}
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/callback")
-class PaymentPubController (val redisPublisher: RedisPublisher) {
+class PubController (val redisPublisher: RedisPublisher) {
 
     val om = jacksonObjectMapper()
 
     /**
-     * 발행
+     * iamport 발행
      */
     @PostMapping("/imp/publish")
-    fun pubMessage(@RequestBody impRequestDto: ImpRequestDto) {
+    fun pubPaymentCallbackMessage(@RequestBody impRequestDto: ImpRequestDto) {
         logger.info { "data: $impRequestDto" }
         val key = CommonDef.IMP_BUS
         val channel: ChannelTopic? = ChannelsAdvice.channels[key]
