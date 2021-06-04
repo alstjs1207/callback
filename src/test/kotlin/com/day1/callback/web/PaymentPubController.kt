@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
   @Autowired를 명시적으로 선언해 주어야 Jupiter가 Spring Contaimer에게 빈 주입을 요청 할 수 있음
 */
 @AutoConfigureMockMvc //설정 필요
-class ImpRedisControllerTest @Autowired constructor(
+class PaymentPubControllerTest @Autowired constructor(
     val mockMvc: MockMvc
 ) {
     @LocalServerPort
@@ -34,23 +34,6 @@ class ImpRedisControllerTest @Autowired constructor(
     @BeforeAll
     fun setup() {
         println(">>> Setup")
-    }
-
-    @Test
-    fun `모든 채널 조회`() {
-
-        val url = "http://localhost:" + port + "/callback/imp/channels"
-
-        //when
-        val result: MvcResult = mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        println(result.response.contentAsString)
-        // assert 조건 작성
     }
 
     @Test
@@ -66,54 +49,6 @@ class ImpRedisControllerTest @Autowired constructor(
                 .post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jacksonObjectMapper().writeValueAsString(impRequestDto)))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
-    }
-
-    @Test
-    fun `iamport 구독 시작`() {
-        //given
-        val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/imp/subscribe/start/"+key
-
-        //when
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
-    }
-
-    @Test
-    fun `iamport 구독 종료`() {
-        //given
-        val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/imp/subscribe/stop/"+key
-
-        //when
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
-    }
-
-    @Test
-    fun `채널 생성`() {
-        //given
-        val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/imp/channel/"+key
-
-        //when
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk)
 
         //then
