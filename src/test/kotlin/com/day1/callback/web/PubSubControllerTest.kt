@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
   @Autowired를 명시적으로 선언해 주어야 Jupiter가 Spring Contaimer에게 빈 주입을 요청 할 수 있음
 */
 @AutoConfigureMockMvc //설정 필요
-class ImpRedisControllerTest @Autowired constructor(
+class PubSubControllerTest @Autowired constructor(
     val mockMvc: MockMvc
 ) {
     @LocalServerPort
@@ -39,7 +39,7 @@ class ImpRedisControllerTest @Autowired constructor(
     @Test
     fun `모든 채널 조회`() {
 
-        val url = "http://localhost:" + port + "/callback/imp/channels"
+        val url = "http://localhost:" + port + "/callback/channels"
 
         //when
         val result: MvcResult = mockMvc.perform(
@@ -50,32 +50,14 @@ class ImpRedisControllerTest @Autowired constructor(
             .andReturn()
 
         println(result.response.contentAsString)
-        // assert 조건 작성
-    }
 
-    @Test
-    fun `iamport 발행`() {
-
-        //given
-        val impRequestDto = ImpRequestDto("imp_1234567890","merchant_1234567890","ready")
-        val url = "http://localhost:" + port + "/callback/imp/publish"
-
-        //when
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jacksonObjectMapper().writeValueAsString(impRequestDto)))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
     }
 
     @Test
     fun `iamport 구독 시작`() {
         //given
         val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/imp/subscribe/start/"+key
+        val url = "http://localhost:" + port + "/callback/subscribe/start/"+key
 
         //when
         mockMvc.perform(
@@ -91,7 +73,7 @@ class ImpRedisControllerTest @Autowired constructor(
     fun `iamport 구독 종료`() {
         //given
         val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/imp/subscribe/stop/"+key
+        val url = "http://localhost:" + port + "/callback/subscribe/stop/"+key
 
         //when
         mockMvc.perform(
@@ -107,7 +89,7 @@ class ImpRedisControllerTest @Autowired constructor(
     fun `채널 생성`() {
         //given
         val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/imp/channel/"+key
+        val url = "http://localhost:" + port + "/callback/channel/"+key
 
         //when
         mockMvc.perform(

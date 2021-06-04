@@ -1,30 +1,30 @@
 # Callback
 
-
-## iamport callback api
-
 ---
 
-### Introducion
+## Introducion
 
 ---
 `application.yml`파일의 `channel`에 있는 정보를 이용하여 구동 시 채널 생성
 
+---
 
 ### iamport 발행
 - path `POST` `/callback/imp/publish`
 
 - Parameters
 
-|Parameters|Name|Description|
+|Name|Type|Description|
 |------|---|---|
-|imp_uid|||
-|merchant_uid|||
-|status|상태|테스트 : ready|
+|imp_uid|String|아임포트 주문번호|
+|merchant_uid|String|가맹점 주문번호|
+|status|String|결제 결과|
+
+
 
 - Example
 
-```aidl
+```
 {
     "imp_uid":"imp_1234567890",
     "merchant_id":"merchant_1234567890",
@@ -32,53 +32,54 @@
 }
 ```
 
+## 공통 모듈
 
-### iamport 구독 시작
-- path `PUT` `/callback/imp/subscribe/start/{key}`
+### 구독 시작
+- path `PUT` `/callback/subscribe/start/{key}`
 
 - Parameters
   - key: topic
 
 - Example
 
-```aidl
-bus:0:pg:imp
+```
+/callback/subscribe/start/bus:0:pg:imp
 ```
 
-### iamport 구독 종료
-- path `PUT` `/callback/imp/subscribe/stop/{key}`
+### 구독 종료
+- path `PUT` `/callback/subscribe/stop/{key}`
 
 - Parameters
   - key: topic
 
 - Example
 
-```aidl
-bus:0:pg:imp
+```
+/callback/subscribe/stop/bus:0:pg:imp
 ```
 
 ### 모든 채널 조회
-- path `GET` `/callback/imp/channels`
+- path `GET` `/callback/channels`
 
 - Response
 
 ### 채널 생성
-- path `PUT` `/callback/imp/channel/{key}`
+- path `PUT` `/callback/channel/{key}`
 
 - Parameters
     - key: topic
 
 - Example
 
-```aidl
-bus:0:pg:imp
+```
+/callback/channel/bus:0:pg:imp
 ```
 
 ## Test 진행
 
 ### Redis 접속
 
-```aidl
+```
 $ docker exec -it v2_redis_1 /bin/sh
 
 # redis 접속
@@ -88,7 +89,7 @@ $ redis-cli
 ```
 
 구독 하기
-```aidl
+```
 $ subscribe bus:o:pg:imp
 
 1) "subscribe"
@@ -98,12 +99,8 @@ $ subscribe bus:o:pg:imp
 
 ### worker 기동
 
-jobs.js 확인
-```aidl
-iamport: { task: 'iamport', triggers: [{ bus: 'pg:imp' }], queue: 0 }
-```
 worker 기동
-```aidl
+```
 $ cd v2/worker
 $ npm run serve
 ```
@@ -114,12 +111,12 @@ $ npm run serve
 
 ---
 gradle 빌드
-```aidl
+```
 $ sudo ./gradlew build
 ```
 
 빌드 완료 후 실행
-```aidl
+```
 $ cd build/libs
 $ java -jar callback-0.0.1-SNAPSHOT.jar
 ```
