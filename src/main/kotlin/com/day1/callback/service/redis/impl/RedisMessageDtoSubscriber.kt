@@ -12,7 +12,7 @@ import javax.annotation.Resource
 private val logger = KotlinLogging.logger {}
 
 @Service
-class RedisMessageDtoSubscriber(val redisTemplate: RedisTemplate<String, Any>): MessageListener {
+class RedisMessageDtoSubscriber(@Resource(name = "fcRedisTemplate") val redisTemplate: RedisTemplate<String, Any>): MessageListener {
     val om = jacksonObjectMapper()
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
