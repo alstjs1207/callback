@@ -3,7 +3,11 @@ server:
 
 spring:
   redis:
-    host: 127.0.0.1
-    port: 6379
+    prefix: "bus"
     database: 0
-    channel: bus:0:pg:imp,bus:0:ping
+    fc:
+      host: 127.0.0.1
+      port: 6379
+    sb:
+      host: 127.0.0.1
+      port: 6379

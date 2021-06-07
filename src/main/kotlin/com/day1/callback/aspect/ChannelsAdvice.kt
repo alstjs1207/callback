@@ -15,19 +15,18 @@ class ChannelsAdvice (){
         lateinit var channels: HashMap<String, ChannelTopic>
     }
 
-    @Value("\${spring.redis.channel}")
-    lateinit var redisChannels: List<String>
+    @Value("\${spring.redis.prefix}")
+    private val redisPrefix: String? = "bus"
 
+    @Value("\${spring.redis.database}")
+    private val redisDb: Int? = 0
 
-    //TODO 더 좋은 방법이 무엇일까?..
     @PostConstruct
     private fun init() {
-        logger.info { "init! $redisChannels" }
         channels = mutableMapOf<String, ChannelTopic>() as HashMap<String, ChannelTopic>
-        //callback에 필요한 channel 등록
-        for (key in redisChannels) {
-            val channel: ChannelTopic = ChannelTopic(key)
-            channels[key] = channel
-        }
+    }
+
+    fun toChannelName(topic: String): String {
+        return "$redisPrefix:$redisDb:$topic"
     }
 }
