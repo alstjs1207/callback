@@ -33,6 +33,28 @@
 }
 ```
 
+### kakao sync 발행
+
+- path `POST` `/callback/kakao/publish`
+
+- Parameter
+  
+  |Name|Type|Description|
+  |------|---|---|
+  |id|String|카카오 아이디|
+  |plus_friend_uuid|String|사이트 uuid|
+  |event|String||
+
+- Example
+
+```
+{
+    "id":"kakaoId",
+    "plus_friend_uuid":"@uuid",
+    "event":"ok"
+}
+```
+
 ## 공통 모듈
 
 ### 구독 시작
@@ -123,6 +145,15 @@ $ java -jar callback-0.0.1-SNAPSHOT.jar
 ```
 
 `application.properties` 파일 설정 상 port는 `9090` 으로 설정 함.
+
+## todo
+
+---
+
+- multi redis
+- kakao sync
+- kollus
+- db 연동(jdbc)
 
 
 

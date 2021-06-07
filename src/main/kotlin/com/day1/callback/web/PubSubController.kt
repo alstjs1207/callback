@@ -10,6 +10,7 @@ import mu.KotlinLogging
 import org.springframework.data.redis.listener.ChannelTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.web.bind.annotation.*
+import javax.annotation.Resource
 
 private val logger = KotlinLogging.logger {}
 
@@ -17,10 +18,12 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("/callback")
 class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber,
-                        val redisMessageListenerContainer: RedisMessageListenerContainer) {
+                        val channelsAdvice: ChannelsAdvice,
+                        //todo 임시로 fc로 연결하였지만, 사이트마다 sub하도록 수정 필요
+                        @Resource(name = "fcRedisContainer") val redisMessageListenerContainer: RedisMessageListenerContainer) {
 
     /**
-     * 채널 조회
+     * 모든 채널 조회
      */
     @GetMapping("/channels")
     fun findAllChannels(): MutableSet<String> {
@@ -33,7 +36,7 @@ class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber
     @PutMapping("/channel/{key}")
     fun createChannel(@PathVariable key: String): String {
         logger.info { "create $key channel" }
-        val channel: ChannelTopic = ChannelTopic(key)
+        val channel: ChannelTopic = ChannelTopic(channelsAdvice.toChannelName(key))
         ChannelsAdvice.channels[key] = channel
         return key
     }
@@ -44,7 +47,7 @@ class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber
     @PutMapping("/subscribe/start/{key}")
     fun subMessage(@PathVariable key: String) {
         logger.info { "subscribe $key start" }
-        val channel = ChannelsAdvice.channels[key]?: throw ErrorException(ErrorCode.NO_CHANNEL)
+        val channel = ChannelsAdvice.channels[channelsAdvice.toChannelName(key)]?: throw ErrorException(ErrorCode.NO_CHANNEL)
         redisMessageListenerContainer.addMessageListener(redisMessageDtoSubscriber,  channel)
     }
 
@@ -54,7 +57,7 @@ class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber
     @PutMapping("/subscribe/stop/{key}")
     fun unsubMessage(@PathVariable key: String) {
         logger.info { "subscribe $key stop" }
-        val channel = ChannelsAdvice.channels[key]?: throw ErrorException(ErrorCode.NO_CHANNEL)
+        val channel = ChannelsAdvice.channels[channelsAdvice.toChannelName(key)]?: throw ErrorException(ErrorCode.NO_CHANNEL)
         redisMessageListenerContainer.removeMessageListener(redisMessageDtoSubscriber,  channel)
     }
 }
