@@ -4,5 +4,7 @@ import org.springframework.data.redis.listener.ChannelTopic
 
 interface RedisPublisher {
 
-    fun publish(topic: ChannelTopic, message: String)
+    fun fcPublish(topic: ChannelTopic, message: String)
+
+    fun sbPublish(topic: ChannelTopic, message: String)
 }
