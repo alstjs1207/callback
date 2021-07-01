@@ -25,6 +25,8 @@ dependencies {
 	implementation("org.projectlombok:lombok")
 	//Logging
 	implementation("io.github.microutils:kotlin-logging:1.12.5")
+	//kotlinx
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 	//jpa
 	//implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	//test

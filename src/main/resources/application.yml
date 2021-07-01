@@ -2,12 +2,44 @@ server:
   port: 9090
 
 spring:
+  profiles:
+    group:
+      local: local
+      prod: prod
   redis:
+    host: 127.0.0.1
+    port: 6379
     prefix: "bus"
     database: 0
-    fc:
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  redis:
+    daum:
       host: 127.0.0.1
       port: 6379
-    sb:
+    naver:
+      host: 127.0.0.1
+      port: 6379
+    google:
+      host: 127.0.0.1
+      port: 6379
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  redis:
+    daum:
+      host: 127.0.0.1
+      port: 6379
+    naver:
+      host: 127.0.0.1
+      port: 6379
+    google:
       host: 127.0.0.1
       port: 6379
