@@ -15,18 +15,18 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 
 @Configuration
 @EnableRedisRepositories
-class SbRedisConfig() {
-    @Value("\${spring.redis.sb.host}")
+class GoogleRedisConfig() {
+    @Value("\${spring.redis.google.host}")
     private val redisHost: String? = null
 
-    @Value("\${spring.redis.sb.port}")
+    @Value("\${spring.redis.google.port}")
     private val redisPort: Int = 0
 
     @Value("\${spring.redis.database}")
     private val database: Int = 0
 
-    @Bean( name= ["sbLettuceConnectionFactory"])
-    fun  sbLettuceConnectionFactory(): RedisConnectionFactory {
+    @Bean(name = ["GoogleLettuceConnectionFactory"])
+    fun gLettuceConnectionFactory(): RedisConnectionFactory {
         val redisStandaloneConfiguration = RedisStandaloneConfiguration()
         redisStandaloneConfiguration.hostName = redisHost!!
         redisStandaloneConfiguration.port = redisPort
@@ -34,22 +34,22 @@ class SbRedisConfig() {
         return LettuceConnectionFactory(redisStandaloneConfiguration)
     }
 
-    @Bean( name = ["sbRedisTemplate"])
-    fun sbRedisTemplate(): RedisTemplate<String, Any> {
+    @Bean(name = ["GoogleRedisTemplate"])
+    fun gRedisTemplate(): RedisTemplate<String, Any> {
         val template = RedisTemplate<String, Any>()
         template.keySerializer = StringRedisSerializer()
         template.valueSerializer = GenericJackson2JsonRedisSerializer()
         template.hashKeySerializer = StringRedisSerializer()
         template.hashValueSerializer = GenericJackson2JsonRedisSerializer()
-        template.setConnectionFactory(sbLettuceConnectionFactory())
+        template.setConnectionFactory(gLettuceConnectionFactory())
         template.setEnableTransactionSupport(true)
         return template
     }
 
-    @Bean( name= ["sbRedisContainer"])
-    fun sbRedisContainer(): RedisMessageListenerContainer {
+    @Bean(name = ["GoogleRedisContainer"])
+    fun gRedisContainer(): RedisMessageListenerContainer {
         val container = RedisMessageListenerContainer()
-        container.setConnectionFactory(sbLettuceConnectionFactory())
+        container.setConnectionFactory(gLettuceConnectionFactory())
         return container
     }
 }
