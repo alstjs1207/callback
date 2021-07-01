@@ -21,23 +21,50 @@ private val logger = KotlinLogging.logger {}
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/callback")
-class PubController (val redisPublisher: RedisPublisher) {
+class PubController (val redisPublisher: RedisPublisher,
+                     val channelsAdvice: ChannelsAdvice) {
 
     val om = jacksonObjectMapper()
 
     /**
-     * iamport 발행
+     * Fc iamport 발행
      */
-    @PostMapping("/imp/publish")
-    fun pubPaymentCallbackMessage(@RequestBody impRequestDto: ImpRequestDto) {
+    @PostMapping("/imp/publish/fc")
+    fun pubFcPaymentCallbackMessage(@RequestBody impRequestDto: ImpRequestDto) {
         logger.info { "data: $impRequestDto" }
-        val key = CommonDef.IMP_BUS
+        val key =  channelsAdvice.toChannelName(CommonDef.FC+":"+CommonDef.IMP_BUS)
+        logger.info { "key: $key" }
         val channel: ChannelTopic? = ChannelsAdvice.channels[key]
         var jsonStr = om.writeValueAsString(impRequestDto)
         if (channel !== null) {
-            redisPublisher.publish(channel, jsonStr)
+            redisPublisher.fcPublish(channel, jsonStr)
         } else {
-            throw ErrorException(ErrorCode.NO_CHANNEL)
+            //채널 생성 후 발행
+            val channel: ChannelTopic = ChannelTopic(key)
+            ChannelsAdvice.channels[key] = channel
+            redisPublisher.fcPublish(channel, jsonStr)
+            //throw ErrorException(ErrorCode.NO_CHANNEL)
+        }
+    }
+
+    /**
+     * Sb iamport 발행
+     */
+    @PostMapping("/imp/publish/sb")
+    fun pubSbPaymentCallbackMessage(@RequestBody impRequestDto: ImpRequestDto) {
+        logger.info { "data: $impRequestDto" }
+        val key =  channelsAdvice.toChannelName(CommonDef.SB+":"+CommonDef.IMP_BUS)
+        logger.info { "key: $key" }
+        val channel: ChannelTopic? = ChannelsAdvice.channels[key]
+        var jsonStr = om.writeValueAsString(impRequestDto)
+        if (channel !== null) {
+            redisPublisher.sbPublish(channel, jsonStr)
+        } else {
+            //채널 생성 후 발행
+            val channel: ChannelTopic = ChannelTopic(key)
+            ChannelsAdvice.channels[key] = channel
+            redisPublisher.sbPublish(channel, jsonStr)
+            //throw ErrorException(ErrorCode.NO_CHANNEL)
         }
     }
 }

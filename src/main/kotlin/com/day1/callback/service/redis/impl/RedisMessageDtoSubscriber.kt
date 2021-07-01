@@ -7,11 +7,12 @@ import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.connection.MessageListener
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
+import javax.annotation.Resource
 
 private val logger = KotlinLogging.logger {}
 
 @Service
-class RedisMessageDtoSubscriber(val redisTemplate: RedisTemplate<String, Any>): MessageListener {
+class RedisMessageDtoSubscriber(@Resource(name = "fcRedisTemplate") val redisTemplate: RedisTemplate<String, Any>): MessageListener {
     val om = jacksonObjectMapper()
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
