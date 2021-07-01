@@ -14,7 +14,9 @@ private val logger = KotlinLogging.logger {}
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/callback")
-class PubController(val redisPublisher: RedisPublisher) {
+class PubController(
+    val redisPublisher: RedisPublisher
+) {
 
     val om = jacksonObjectMapper()
 
