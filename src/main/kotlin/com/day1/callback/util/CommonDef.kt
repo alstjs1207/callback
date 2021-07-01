@@ -1,12 +1,12 @@
 package com.day1.callback.util
 
-class CommonDef {
-
-    companion object {
-        const val IMP_BUS: String= "pg:imp"
-        const val PING_BUS: String= "ping"
-        const val FC: String= "fc"
-        const val SB: String= "sb"
-
-    }
+enum class CommonDef(val key: String) {
+    IMP_BUS("pg:imp"),
+    PING_BUS("ping"),
+    EMAIL_BUS("send:email"),
+    EMPLOYEE_BUS("create:employee"),
+    //site
+    DAUM("DAUM"),
+    NAVER("NAVER"),
+    GOOGLE("GOOGLE");
 }

@@ -12,12 +12,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
+@ActiveProfiles("local")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //BeforeAll, AfterAll 사용
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,7 +43,7 @@ class PaymentPubControllerTest @Autowired constructor(
 
         //given
         val impRequestDto = ImpRequestDto("imp_1234567890","merchant_1234567890","ready")
-        val url = "http://localhost:" + port + "/callback/imp/publish"
+        val url = "http://localhost:" + port + "/callback/imp/publish/NAVER"
 
         //when
         mockMvc.perform(

@@ -19,8 +19,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("/callback")
 class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber,
                         val channelsAdvice: ChannelsAdvice,
-                        //todo 임시로 fc로 연결하였지만, 사이트마다 sub하도록 수정 필요
-                        @Resource(name = "fcRedisContainer") val redisMessageListenerContainer: RedisMessageListenerContainer) {
+                        val redisMessageListenerContainer: RedisMessageListenerContainer) {
 
     /**
      * 모든 채널 조회
