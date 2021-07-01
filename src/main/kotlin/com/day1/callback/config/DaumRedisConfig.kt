@@ -1,6 +1,7 @@
 package com.day1.callback.config
 
 
+import com.day1.callback.service.redis.DaumPublisher
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -52,5 +53,10 @@ class DaumRedisConfig() {
         val container = RedisMessageListenerContainer()
         container.setConnectionFactory(dLettuceConnectionFactory())
         return container
+    }
+
+    @Bean
+    fun daumPublisher(redisTemplate: RedisTemplate<String, Any>): DaumPublisher {
+        return DaumPublisher(redisTemplate)
     }
 }
