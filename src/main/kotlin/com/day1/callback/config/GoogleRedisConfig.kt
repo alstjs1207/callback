@@ -1,6 +1,7 @@
 package com.day1.callback.config
 
 
+import com.day1.callback.service.redis.GooglePublisher
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -51,5 +52,10 @@ class GoogleRedisConfig() {
         val container = RedisMessageListenerContainer()
         container.setConnectionFactory(gLettuceConnectionFactory())
         return container
+    }
+
+    @Bean
+    fun googlePublisher(redisTemplate: RedisTemplate<String, Any>): GooglePublisher {
+        return GooglePublisher(redisTemplate)
     }
 }

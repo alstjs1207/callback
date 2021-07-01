@@ -1,6 +1,7 @@
 package com.day1.callback.config
 
 
+import com.day1.callback.service.redis.NaverPublisher
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -51,5 +52,10 @@ class NaverRedisConfig() {
         val container = RedisMessageListenerContainer()
         container.setConnectionFactory(nLettuceConnectionFactory())
         return container
+    }
+
+    @Bean
+    fun naverPublisher(redisTemplate: RedisTemplate<String, Any>): NaverPublisher {
+        return NaverPublisher(redisTemplate)
     }
 }

@@ -56,19 +56,4 @@ class RedisConfig() {
         container.setConnectionFactory(lettuceConnectionFactory())
         return container
     }
-
-    @Bean
-    fun daumPublisher(redisTemplate: RedisTemplate<String, Any>): DaumPublisher {
-        return DaumPublisher(redisTemplate)
-    }
-
-    @Bean
-    fun naverPublisher(redisTemplate: RedisTemplate<String, Any>): NaverPublisher {
-        return NaverPublisher(redisTemplate)
-    }
-
-    @Bean
-    fun googlePublisher(redisTemplate: RedisTemplate<String, Any>): GooglePublisher {
-        return GooglePublisher(redisTemplate)
-    }
 }
