@@ -16,7 +16,7 @@ class PublisherMachine(
     val google: GooglePublisher,
 ) {
 
-    fun changeRedisTemplate(site: String): BasePublisher {
+    fun getSiteRedisPublisher(site: String): BasePublisher {
         return when (site) {
             CommonDef.DAUM.name -> {
                 daum

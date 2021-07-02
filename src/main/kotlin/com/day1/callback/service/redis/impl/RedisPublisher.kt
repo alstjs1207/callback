@@ -16,7 +16,7 @@ class RedisPublisher(
 ) {
 
     private fun publish(topic: ChannelTopic, message: String, site: String) {
-        val basePublisher: BasePublisher = publisherMachine.changeRedisTemplate(site)
+        val basePublisher: BasePublisher = publisherMachine.getSiteRedisPublisher(site)
         basePublisher.publisher(topic, message)
     }
 
