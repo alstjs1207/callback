@@ -27,6 +27,9 @@ class PublisherMachine(
             CommonDef.GOOGLE.name -> {
                 google
             }
+            CommonDef.NATE.name -> {
+                daum
+            }
             else -> throw ErrorException(ErrorCode.NO_SITE)
         }
     }
