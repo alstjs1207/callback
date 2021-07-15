@@ -8,5 +8,6 @@ enum class CommonDef(val key: String) {
     //site
     DAUM("DAUM"),
     NAVER("NAVER"),
-    GOOGLE("GOOGLE");
+    GOOGLE("GOOGLE"),
+    NATE("NATE");
 }
