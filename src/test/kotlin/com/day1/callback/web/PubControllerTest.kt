@@ -1,6 +1,7 @@
 package com.day1.callback.web
 
-import com.day1.callback.web.dto.ImpRequestDto
+import com.day1.callback.web.dto.RedisRequestDto
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -11,13 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.http.MediaType
+import org.springframework.http.RequestEntity
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+
+// top-level Functions
+val mapper = ObjectMapper()
+fun Any.convert2ObjectString(): String = mapper.writeValueAsString(this)
 
 @ActiveProfiles("local")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //BeforeAll, AfterAll 사용
@@ -27,9 +34,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
   @Autowired를 명시적으로 선언해 주어야 Jupiter가 Spring Contaimer에게 빈 주입을 요청 할 수 있음
 */
 @AutoConfigureMockMvc //설정 필요
-class PubSubControllerTest @Autowired constructor(
-    val mockMvc: MockMvc
+class PubControllerTest @Autowired constructor(
+    val mockMvc: MockMvc,
 ) {
+
     @LocalServerPort
     private var port: Int = 0
 
@@ -39,68 +47,21 @@ class PubSubControllerTest @Autowired constructor(
     }
 
     @Test
-    fun `모든 채널 조회`() {
+    fun `Redis publish`() {
 
-        val url = "http://localhost:" + port + "/callback/channels"
-
-        //when
-        val result: MvcResult = mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        println(result.response.contentAsString)
-
-    }
-
-    @Test
-    fun `iamport 구독 시작`() {
         //given
-        val key = "pg:imp"
-        val url = "http://localhost:" + port + "/callback/subscribe/start/"+key
+        val redisRequestDto = RedisRequestDto("foo", "new people")
+        val site: String = "NAVER";
+        val url = "http://localhost:" + port + "/callback/publish/" + site
 
         //when
         mockMvc.perform(
             MockMvcRequestBuilders
-                .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
+                .post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jacksonObjectMapper().writeValueAsString(redisRequestDto))
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
-    }
-
-    @Test
-    fun `iamport 구독 종료`() {
-        //given
-        val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/subscribe/stop/"+key
-
-        //when
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
-    }
-
-    @Test
-    fun `채널 생성`() {
-        //given
-        val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/channel/"+key
-
-        //when
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isOk)
-
-        //then
     }
 
     @AfterAll

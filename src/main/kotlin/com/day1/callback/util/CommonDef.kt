@@ -9,5 +9,6 @@ enum class CommonDef(val key: String) {
     DAUM("DAUM"),
     NAVER("NAVER"),
     GOOGLE("GOOGLE"),
-    NATE("NATE");
+    NATE("NATE"),
+    TEST("TEST");
 }

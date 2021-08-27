@@ -10,6 +10,15 @@ private val logger = KotlinLogging.logger {}
 //TODO 사이트마다 topic을 만들어야할까?
 class SitePublisher
 
+class DefaultPublisher(private val defaultRedisTemplate: RedisTemplate<String, Any>) :
+    BasePublisher {
+
+    override fun publisher(topic: ChannelTopic, message: String) {
+        logger.info { "default pub" }
+        defaultRedisTemplate.convertAndSend(topic.topic, message)
+    }
+}
+
 class NaverPublisher(@Resource(name = "NaverRedisTemplate") val nRedisTemplate: RedisTemplate<String, Any>) :
     BasePublisher {
 
