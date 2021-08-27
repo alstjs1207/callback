@@ -37,6 +37,8 @@ dependencies {
 	testImplementation("com.ninja-squad:springmockk:3.0.1") {
 		exclude(module = "mockito-core")
 	}
+	// embedded-redis
+	implementation("it.ozimov:embedded-redis:0.7.2")
 
 }
 
