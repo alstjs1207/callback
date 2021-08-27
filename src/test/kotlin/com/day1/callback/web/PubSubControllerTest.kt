@@ -1,5 +1,6 @@
 package com.day1.callback.web
 
+import com.day1.callback.aspect.ChannelsAdvice
 import com.day1.callback.web.dto.ImpRequestDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.AfterAll
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.data.redis.listener.ChannelTopic
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -28,7 +30,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 */
 @AutoConfigureMockMvc //설정 필요
 class PubSubControllerTest @Autowired constructor(
-    val mockMvc: MockMvc
+    val mockMvc: MockMvc,
+    val channelsAdvice: ChannelsAdvice
 ) {
     @LocalServerPort
     private var port: Int = 0
@@ -36,6 +39,8 @@ class PubSubControllerTest @Autowired constructor(
     @BeforeAll
     fun setup() {
         println(">>> Setup")
+        val channel: ChannelTopic = ChannelTopic(channelsAdvice.toChannelName("pg:imp"))
+        ChannelsAdvice.channels[channelsAdvice.toChannelName("pg:imp")] = channel
     }
 
     @Test
