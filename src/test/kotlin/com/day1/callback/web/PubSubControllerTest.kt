@@ -79,7 +79,7 @@ class PubSubControllerTest @Autowired constructor(
     @Test
     fun `iamport 구독 종료`() {
         //given
-        val key = "bus:0:pg:imp"
+        val key = "pg:imp"
         val url = "http://localhost:" + port + "/callback/subscribe/stop/"+key
 
         //when
