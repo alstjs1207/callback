@@ -13,12 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    services:
-      redis:
-        image: redis
-        ports:
-        - 6379:6379
-        options: --entrypoint redis-server
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -27,6 +21,12 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
+    - name: redis
+      uses: mihai-dinculescu/redis-action@v1.2.0
+      with:
+        redis version: "latest"
+        number of databases: 0
+        redis password: ""
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
