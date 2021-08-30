@@ -3,6 +3,7 @@ package com.day1.callback.web
 import com.day1.callback.aspect.ChannelsAdvice
 import com.day1.callback.web.dto.ImpRequestDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -52,7 +53,8 @@ class PubSubControllerTest @Autowired constructor(
         val result: MvcResult = mockMvc.perform(
             MockMvcRequestBuilders
                 .get(url)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -64,13 +66,14 @@ class PubSubControllerTest @Autowired constructor(
     fun `iamport 구독 시작`() {
         //given
         val key = "pg:imp"
-        val url = "http://localhost:" + port + "/callback/subscribe/start/"+key
+        val url = "http://localhost:" + port + "/callback/subscribe/start/" + key
 
         //when
         mockMvc.perform(
             MockMvcRequestBuilders
                 .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
 
         //then
@@ -80,13 +83,14 @@ class PubSubControllerTest @Autowired constructor(
     fun `iamport 구독 종료`() {
         //given
         val key = "pg:imp"
-        val url = "http://localhost:" + port + "/callback/subscribe/stop/"+key
+        val url = "http://localhost:" + port + "/callback/subscribe/stop/" + key
 
         //when
         mockMvc.perform(
             MockMvcRequestBuilders
                 .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
 
         //then
@@ -96,31 +100,22 @@ class PubSubControllerTest @Autowired constructor(
     fun `채널 생성`() {
         //given
         val key = "bus:0:pg:imp"
-        val url = "http://localhost:" + port + "/callback/channel/"+key
+        val url = "http://localhost:" + port + "/callback/channel/" + key
 
         //when
         mockMvc.perform(
             MockMvcRequestBuilders
                 .put(url)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(MockMvcResultMatchers.status().isOk)
 
         //then
     }
 
     @Test
-    fun `모든 채널 조회- 실패`() {
-
-        val url = "http://localhost:" + port + "/callback/channels"
-
-        //when
-        val result: MvcResult = mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest)
-            .andReturn()
-
+    fun `테스트 실패`() {
+        assertThat(true).isFalse;
     }
 
     @AfterAll
