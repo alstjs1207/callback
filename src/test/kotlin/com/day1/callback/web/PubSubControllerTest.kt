@@ -113,11 +113,6 @@ class PubSubControllerTest @Autowired constructor(
         //then
     }
 
-    @Test
-    fun `테스트 실패`() {
-        assertThat(true).isFalse;
-    }
-
     @AfterAll
     fun teardown() {
         println(">> Tear down")
