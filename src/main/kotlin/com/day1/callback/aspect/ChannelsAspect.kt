@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ChannelsAdvice (){
+class ChannelsAspect (){
 
     companion object {
         lateinit var channels: HashMap<String, ChannelTopic>

@@ -1,6 +1,6 @@
 package com.day1.callback.web
 
-import com.day1.callback.aspect.ChannelsAdvice
+import com.day1.callback.aspect.ChannelsAspect
 import com.day1.callback.service.exception.ErrorCode
 import com.day1.callback.service.exception.ErrorException
 import com.day1.callback.service.redis.impl.RedisMessageDtoSubscriber
@@ -18,7 +18,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("/callback")
 class SubController(
     val redisMessageDtoSubscriber: RedisMessageDtoSubscriber,
-    val channelsAdvice: ChannelsAdvice,
+    val channelsAspect: ChannelsAspect,
     val redisMessageListenerContainer: RedisMessageListenerContainer
 ) {
 
@@ -29,7 +29,7 @@ class SubController(
     fun subMessage(@PathVariable key: String) {
         logger.info { "subscribe $key start" }
         val channel =
-            ChannelsAdvice.channels[channelsAdvice.toChannelName(key)] ?: throw ErrorException(ErrorCode.NO_CHANNEL)
+            ChannelsAspect.channels[channelsAspect.toChannelName(key)] ?: throw ErrorException(ErrorCode.NO_CHANNEL)
         redisMessageListenerContainer.addMessageListener(redisMessageDtoSubscriber, channel)
     }
 
@@ -40,7 +40,7 @@ class SubController(
     fun unsubMessage(@PathVariable key: String) {
         logger.info { "subscribe $key stop" }
         val channel =
-            ChannelsAdvice.channels[channelsAdvice.toChannelName(key)] ?: throw ErrorException(ErrorCode.NO_CHANNEL)
+            ChannelsAspect.channels[channelsAspect.toChannelName(key)] ?: throw ErrorException(ErrorCode.NO_CHANNEL)
         redisMessageListenerContainer.removeMessageListener(redisMessageDtoSubscriber, channel)
     }
 }
