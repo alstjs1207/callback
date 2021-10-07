@@ -17,9 +17,7 @@ private val logger = KotlinLogging.logger {}
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/callback")
-class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber,
-                        val channelsAdvice: ChannelsAdvice,
-                        val redisMessageListenerContainer: RedisMessageListenerContainer) {
+class PubSubController(val channelsAdvice: ChannelsAdvice) {
 
     /**
      * 모든 채널 조회
@@ -38,25 +36,5 @@ class PubSubController (val redisMessageDtoSubscriber: RedisMessageDtoSubscriber
         val channel: ChannelTopic = ChannelTopic(channelsAdvice.toChannelName(key))
         ChannelsAdvice.channels[key] = channel
         return key
-    }
-
-    /**
-     * 구독 시작
-     */
-    @PutMapping("/subscribe/start/{key}")
-    fun subMessage(@PathVariable key: String) {
-        logger.info { "subscribe $key start" }
-        val channel = ChannelsAdvice.channels[channelsAdvice.toChannelName(key)]?: throw ErrorException(ErrorCode.NO_CHANNEL)
-        redisMessageListenerContainer.addMessageListener(redisMessageDtoSubscriber,  channel)
-    }
-
-    /**
-     * 구독 삭제
-     */
-    @PutMapping("/subscribe/stop/{key}")
-    fun unsubMessage(@PathVariable key: String) {
-        logger.info { "subscribe $key stop" }
-        val channel = ChannelsAdvice.channels[channelsAdvice.toChannelName(key)]?: throw ErrorException(ErrorCode.NO_CHANNEL)
-        redisMessageListenerContainer.removeMessageListener(redisMessageDtoSubscriber,  channel)
     }
 }

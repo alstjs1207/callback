@@ -26,11 +26,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //BeforeAll, AfterAll 사용
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-/*테스트 프레임워크에서의 생성자 매개변수 관리는 스프링 컨테이너가 아닌Jupiter가 담당
-  @Autowired를 명시적으로 선언해 주어야 Jupiter가 Spring Contaimer에게 빈 주입을 요청 할 수 있음
-*/
 @AutoConfigureMockMvc //설정 필요
-class PubSubControllerTest @Autowired constructor(
+class SubControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
     val channelsAdvice: ChannelsAdvice
 ) {
@@ -40,45 +37,42 @@ class PubSubControllerTest @Autowired constructor(
     @BeforeAll
     fun setup() {
         println(">>> Setup")
-        val channel = ChannelTopic(channelsAdvice.toChannelName("foo"))
-        ChannelsAdvice.channels[channelsAdvice.toChannelName("foo")] = channel
+        val channel: ChannelTopic = ChannelTopic(channelsAdvice.toChannelName("pg:imp"))
+        ChannelsAdvice.channels[channelsAdvice.toChannelName("pg:imp")] = channel
     }
 
     @Test
-    fun `모든 채널 조회`() {
-
-        val url = "http://localhost:" + port + "/callback/channels"
-
-        //when
-        val result: MvcResult = mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        assertThat(result.response.contentAsString).contains("bus:0:foo")
-
-    }
-
-    @Test
-    fun `채널 생성`() {
+    fun `구독 시작`() {
         //given
-        val key = "bus:0:bar"
-        val url = "http://localhost:" + port + "/callback/channel/" + key
+        val key = "pg:imp"
+        val url = "http://localhost:" + port + "/callback/subscribe/start/" + key
 
         //when
-        val result: MvcResult = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders
                 .put(url)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
 
         //then
-        assertThat(result.response.contentAsString).contains("bus:0:bar")
+    }
+
+    @Test
+    fun `구독 종료`() {
+        //given
+        val key = "pg:imp"
+        val url = "http://localhost:" + port + "/callback/subscribe/stop/" + key
+
+        //when
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+
+        //then
     }
 
     @AfterAll
