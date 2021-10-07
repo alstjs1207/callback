@@ -1,6 +1,6 @@
 package com.day1.callback.web
 
-import com.day1.callback.aspect.ChannelsAdvice
+import com.day1.callback.aspect.ChannelsAspect
 import com.day1.callback.web.dto.ImpRequestDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @AutoConfigureMockMvc //설정 필요
 class SubControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
-    val channelsAdvice: ChannelsAdvice
+    val channelsAspect: ChannelsAspect
 ) {
     @LocalServerPort
     private var port: Int = 0
@@ -37,8 +37,8 @@ class SubControllerTest @Autowired constructor(
     @BeforeAll
     fun setup() {
         println(">>> Setup")
-        val channel: ChannelTopic = ChannelTopic(channelsAdvice.toChannelName("pg:imp"))
-        ChannelsAdvice.channels[channelsAdvice.toChannelName("pg:imp")] = channel
+        val channel: ChannelTopic = ChannelTopic(channelsAspect.toChannelName("pg:imp"))
+        ChannelsAspect.channels[channelsAspect.toChannelName("pg:imp")] = channel
     }
 
     @Test
