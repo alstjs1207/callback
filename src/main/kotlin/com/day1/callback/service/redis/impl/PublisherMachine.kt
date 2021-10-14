@@ -7,6 +7,7 @@ import com.day1.callback.service.redis.DaumPublisher
 import com.day1.callback.service.redis.GooglePublisher
 import com.day1.callback.service.redis.NaverPublisher
 import com.day1.callback.util.CommonDef
+import com.day1.callback.util.SiteDef
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,16 +19,16 @@ class PublisherMachine(
 
     fun getSiteRedisPublisher(site: String): BasePublisher {
         return when (site) {
-            CommonDef.DAUM.name -> {
+            SiteDef.DAUM.name -> {
                 daum
             }
-            CommonDef.NAVER.name -> {
+            SiteDef.NAVER.name -> {
                 naver
             }
-            CommonDef.GOOGLE.name -> {
+            SiteDef.GOOGLE.name -> {
                 google
             }
-            CommonDef.NATE.name -> {
+            SiteDef.NATE.name -> {
                 daum
             }
             else -> throw ErrorException(ErrorCode.NO_SITE)

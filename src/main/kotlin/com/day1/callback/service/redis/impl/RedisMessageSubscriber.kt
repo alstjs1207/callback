@@ -3,14 +3,19 @@ package com.day1.callback.service.redis.impl
 import mu.KotlinLogging
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.connection.MessageListener
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
+
 
 private val logger = KotlinLogging.logger {}
 
 @Service
-class RedisMessageSubscriber(): MessageListener {
+class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>): MessageListener {
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
-        logger.info { "message = ${String(message.body)}" }
+        logger.info { "message = $message" }
+        val data = redisTemplate.stringSerializer.deserialize(message.body)
+        logger.info { "message = $data key = ${pattern?.let { String(it) }}" }
+        //cloud run에다가 전송...
     }
 }

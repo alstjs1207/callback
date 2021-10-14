@@ -5,10 +5,5 @@ enum class CommonDef(val key: String) {
     PING_BUS("ping"),
     EMAIL_BUS("send:email"),
     EMPLOYEE_BUS("create:employee"),
-    //site
-    DAUM("DAUM"),
-    NAVER("NAVER"),
-    GOOGLE("GOOGLE"),
-    NATE("NATE"),
-    TEST("TEST");
+    EXCEL_BUS("create:export:excel");
 }

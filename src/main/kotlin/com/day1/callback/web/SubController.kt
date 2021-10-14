@@ -18,6 +18,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping("/callback")
 class SubController(
     val redisMessageDtoSubscriber: RedisMessageDtoSubscriber,
+    val redisMessageSubscriber: RedisMessageSubscriber,
     val channelsAspect: ChannelsAspect,
     val redisMessageListenerContainer: RedisMessageListenerContainer
 ) {
@@ -30,7 +31,7 @@ class SubController(
         logger.info { "subscribe $key start" }
         val channel =
             ChannelsAspect.channels[channelsAspect.toChannelName(key)] ?: throw ErrorException(ErrorCode.NO_CHANNEL)
-        redisMessageListenerContainer.addMessageListener(redisMessageDtoSubscriber, channel)
+        redisMessageListenerContainer.addMessageListener(redisMessageSubscriber, channel)
     }
 
     /**
@@ -41,6 +42,6 @@ class SubController(
         logger.info { "subscribe $key stop" }
         val channel =
             ChannelsAspect.channels[channelsAspect.toChannelName(key)] ?: throw ErrorException(ErrorCode.NO_CHANNEL)
-        redisMessageListenerContainer.removeMessageListener(redisMessageDtoSubscriber, channel)
+        redisMessageListenerContainer.removeMessageListener(redisMessageSubscriber, channel)
     }
 }
