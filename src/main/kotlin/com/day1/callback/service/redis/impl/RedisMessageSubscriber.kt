@@ -13,9 +13,19 @@ private val logger = KotlinLogging.logger {}
 class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>): MessageListener {
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
-        logger.info { "message = $message" }
-        val data = redisTemplate.stringSerializer.deserialize(message.body)
-        logger.info { "message = $data key = ${pattern?.let { String(it) }}" }
-        //cloud run에다가 전송...
+        val msg = redisTemplate.stringSerializer.deserialize(message.body)
+        val channel: String? = pattern?.let { String(it) }
+
+        if (channel !== null) {
+
+            if(!msg.equals(channel)) {
+                logger.info { "channel: $channel message: $msg" }
+            }
+
+            if (redisTemplate.opsForList().size(channel)!! > 0) {
+                val popMsg = redisTemplate.opsForList().rightPop(channel)
+                logger.info { "channel: $channel message: $popMsg" }
+            }
+        }
     }
 }
