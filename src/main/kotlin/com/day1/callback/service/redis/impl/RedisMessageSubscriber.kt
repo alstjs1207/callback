@@ -19,13 +19,20 @@ class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>): Mes
         if (channel !== null) {
 
             if(!msg.equals(channel)) {
-                logger.info { "channel: $channel message: $msg" }
+                //cloud run으로 전송
+                sendCloudRun(msg, channel)
+                return
             }
 
             if (redisTemplate.opsForList().size(channel)!! > 0) {
                 val popMsg = redisTemplate.opsForList().rightPop(channel)
-                logger.info { "channel: $channel message: $popMsg" }
+                //cloud run으로 전송
+                sendCloudRun(popMsg as String?, channel)
             }
         }
+    }
+
+    fun sendCloudRun(message: String?, channel: String) {
+        logger.info { "channel: $channel message: $message" }
     }
 }
