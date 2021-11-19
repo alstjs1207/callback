@@ -30,6 +30,8 @@ spring:
     nate:
       host: 127.0.0.1
       port: 6379
+  tasks:
+    ping: 'https://XXX.a.run.app/.ping'
 
 ---
 spring:
