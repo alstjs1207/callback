@@ -24,7 +24,7 @@ class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>): Mes
                 return
             }
 
-            if (redisTemplate.opsForList().size(channel)!! > 0) {
+            while (redisTemplate.opsForList().size(channel)!! > 0) {
                 val popMsg = redisTemplate.opsForList().rightPop(channel)
                 //cloud run으로 전송
                 sendCloudRun(popMsg as String?, channel)
