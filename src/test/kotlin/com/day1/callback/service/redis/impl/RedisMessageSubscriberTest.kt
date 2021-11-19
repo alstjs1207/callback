@@ -21,13 +21,11 @@ class RedisMessageSubscriberTest @Autowired constructor(
     val redisTemplate: RedisTemplate<String, Any>
 ) {
 
-
     @Test
-    fun `push or pop `() {
-        val data = "bar"
+    fun `push and pop `() {
+        val data = "{bar:123}"
         redisTemplate.opsForList().leftPush("foo", data)
         val result = redisTemplate.opsForList().rightPop("foo")
         assertThat(data).isEqualTo(result)
-
     }
 }
