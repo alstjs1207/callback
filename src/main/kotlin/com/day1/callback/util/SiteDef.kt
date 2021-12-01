@@ -6,5 +6,6 @@ enum class SiteDef(val key: String) {
     NAVER("NAVER"),
     GOOGLE("GOOGLE"),
     NATE("NATE"),
-    TEST("TEST");
+    TEST("TEST"),
+    KAKAO("KAKAO");
 }
