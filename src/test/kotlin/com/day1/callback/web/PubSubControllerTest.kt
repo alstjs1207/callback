@@ -81,21 +81,6 @@ class PubSubControllerTest @Autowired constructor(
         assertThat(result.response.contentAsString).contains("bus:0:bar")
     }
 
-    @Test
-    fun `모든 채널 조회- 실패`() {
-
-        val url = "http://localhost:" + port + "/callback/channels"
-
-        //when
-        val result: MvcResult = mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest)
-            .andReturn()
-
-    }
-
     @AfterAll
     fun teardown() {
         println(">> Tear down")
