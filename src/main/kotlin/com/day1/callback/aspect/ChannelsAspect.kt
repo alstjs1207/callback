@@ -22,6 +22,9 @@ class ChannelsAspect (){
     @Value("\${spring.redis.database}")
     private val redisDb: Int? = 0
 
+    @Value("\${spring.cloud.gcp.prefix}")
+    private val prefix: String? = ""
+
     @PostConstruct
     private fun init() {
         channels = mutableMapOf<String, ChannelTopic>() as HashMap<String, ChannelTopic>
@@ -31,5 +34,9 @@ class ChannelsAspect (){
 
     fun toChannelName(topic: String): String {
         return "$redisPrefix:$redisDb:$topic"
+    }
+
+    fun toCloudChannelName(topic: String): String {
+        return "$prefix-$topic"
     }
 }

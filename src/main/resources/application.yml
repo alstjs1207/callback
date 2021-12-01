@@ -17,6 +17,12 @@ spring:
   config:
     activate:
       on-profile: local
+  cloud:
+    gcp:
+      credentials:
+        location: 'file:src/main/resources/xxx.json'
+      project-id: 'xxx-web-services'
+      topic: 'bus-0-ping'
   redis:
     daum:
       host: 127.0.0.1
@@ -38,6 +44,12 @@ spring:
   config:
     activate:
       on-profile: prod
+  cloud:
+    gcp:
+      credentials:
+        location: 'classpath:/xxx.json'
+      project-id: 'xxx-web-services'
+      topic: 'bus-0-ping'
   redis:
     daum:
       host: 127.0.0.1

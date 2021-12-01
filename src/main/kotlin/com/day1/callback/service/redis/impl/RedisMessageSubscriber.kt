@@ -1,5 +1,6 @@
 package com.day1.callback.service.redis.impl
 
+import com.day1.callback.service.cloudrun.CloudPublisher
 import com.day1.callback.service.cloudrun.CloudRunPublisher
 import mu.KotlinLogging
 import org.springframework.data.redis.connection.Message
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service
 private val logger = KotlinLogging.logger {}
 
 @Service
-class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>, val cloudRunPublisher: CloudRunPublisher): MessageListener {
+class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>, val cloudPublisher: CloudPublisher): MessageListener {
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
         val msg = redisTemplate.stringSerializer.deserialize(message.body)
@@ -21,14 +22,15 @@ class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>, val 
 
             if(!msg.equals(channel)) {
                 //cloud run으로 전송
-                cloudRunPublisher.sendCloudRun(msg, channel)
+                cloudPublisher.getCloudPublisher(msg, channel)
                 return
             }
 
+            //message와 channel이름이 동일한 경우 redis lpush에 담겨있다.
             while (redisTemplate.opsForList().size(channel)!! > 0) {
                 val popMsg = redisTemplate.opsForList().rightPop(channel)
                 //cloud run으로 전송
-                cloudRunPublisher.sendCloudRun(popMsg as String?, channel)
+                cloudPublisher.getCloudPublisher(popMsg as String?, channel)
             }
         }
     }

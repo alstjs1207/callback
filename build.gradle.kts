@@ -41,6 +41,9 @@ dependencies {
 	// embedded-redis
 	implementation("it.ozimov:embedded-redis:0.7.2")
 
+	implementation("org.springframework.cloud:spring-cloud-gcp-starter-pubsub:1.2.5.RELEASE")
+	implementation("org.springframework.integration:spring-integration-core")
+
 }
 
 tasks.withType<KotlinCompile> {
