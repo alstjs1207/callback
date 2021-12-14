@@ -70,7 +70,12 @@ $ sudo ./gradlew build
 빌드 완료 후 실행
 ```
 $ cd build/libs
-$ java -jar callback-0.0.1-SNAPSHOT.jar
+$ java -jar callback-0.0.1-SNAPSHOT.jar  --spring.profiles.active=local
+```
+
+docker build
+```shell
+docker build -t callback . 
 ```
 
 `application.properties` 파일 설정 상 port는 `9090` 으로 설정 함.
