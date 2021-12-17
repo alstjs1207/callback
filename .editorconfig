@@ -11,4 +11,4 @@ tab_width = 4
 disabled_rules = no-wildcard-imports,import-ordering,comment-spacing
 
 [*.{kt,kts}]
-insert_final_newline = false
+# insert_final_newline = false
