@@ -1,6 +1,5 @@
 package com.day1.callback.config
 
-
 import com.day1.callback.service.redis.DaumPublisher
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

@@ -1,9 +1,6 @@
 package com.day1.callback.web
 
 import com.day1.callback.aspect.ChannelsAspect
-import com.day1.callback.web.dto.ImpRequestDto
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -18,7 +15,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 

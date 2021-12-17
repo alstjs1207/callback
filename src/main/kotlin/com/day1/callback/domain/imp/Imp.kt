@@ -5,4 +5,5 @@ import java.io.Serializable
 data class Imp(
     var imp_uid: String,
     var merchant_uid: String,
-    var status: String): Serializable
+    var status: String
+) : Serializable

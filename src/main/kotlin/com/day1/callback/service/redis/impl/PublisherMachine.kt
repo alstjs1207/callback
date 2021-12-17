@@ -6,7 +6,6 @@ import com.day1.callback.service.redis.BasePublisher
 import com.day1.callback.service.redis.DaumPublisher
 import com.day1.callback.service.redis.GooglePublisher
 import com.day1.callback.service.redis.NaverPublisher
-import com.day1.callback.util.CommonDef
 import com.day1.callback.util.SiteDef
 import org.springframework.stereotype.Service
 
@@ -34,5 +33,4 @@ class PublisherMachine(
             else -> throw ErrorException(ErrorCode.NO_SITE)
         }
     }
-
 }

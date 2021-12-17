@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct
 private val logger = KotlinLogging.logger {}
 
 @Component
-class ChannelsAspect (){
+class ChannelsAspect() {
 
     companion object {
         lateinit var channels: HashMap<String, ChannelTopic>
@@ -26,7 +26,7 @@ class ChannelsAspect (){
     private fun init() {
         channels = mutableMapOf<String, ChannelTopic>() as HashMap<String, ChannelTopic>
         //기동 시 기존의 channel을 생성한다.
-        CommonDef.values().forEach { it ->  channels[it.key] = ChannelTopic(toChannelName(it.key))}
+        CommonDef.values().forEach { it -> channels[it.key] = ChannelTopic(toChannelName(it.key)) }
     }
 
     fun toChannelName(topic: String): String {

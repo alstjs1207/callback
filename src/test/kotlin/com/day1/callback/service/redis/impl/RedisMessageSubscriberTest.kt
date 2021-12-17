@@ -1,6 +1,5 @@
 package com.day1.callback.service.redis.impl
 
-import com.day1.callback.aspect.ChannelsAspect
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith

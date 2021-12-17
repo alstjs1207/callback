@@ -12,21 +12,20 @@ import org.springframework.web.client.postForObject
 private val logger = KotlinLogging.logger {}
 
 @Service
-class CloudRunPublisher( val channelsAspect: ChannelsAspect) {
+class CloudRunPublisher(val channelsAspect: ChannelsAspect) {
 
     fun sendCloudRun(message: String?, channel: String) {
         logger.info { "channel: $channel message: $message" }
-        var url= ""
+        var url = ""
         when (channel) {
             channelsAspect.toChannelName(CommonDef.PING_BUS.key) -> {
                 url = "https://XXX/.ping"
             }
             channelsAspect.toChannelName(CommonDef.EMPLOYEE_BUS.key) -> {
-
             }
             else -> throw ErrorException(ErrorCode.NO_CHANNEL)
         }
-        val result : String =  RestTemplate().postForObject(url, message, String.Companion);
+        val result: String = RestTemplate().postForObject(url, message, String.Companion)
         logger.info { result }
     }
 }

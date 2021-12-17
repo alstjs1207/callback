@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class CallbackApplication
 
 fun main(args: Array<String>) {
-	runApplication<CallbackApplication>(*args)
+    runApplication<CallbackApplication>(*args)
 }

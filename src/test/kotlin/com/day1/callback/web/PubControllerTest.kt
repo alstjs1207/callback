@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.http.MediaType
-import org.springframework.http.RequestEntity
-import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -51,7 +48,7 @@ class PubControllerTest @Autowired constructor(
 
         //given
         val redisRequestDto = RedisRequestDto("foo", "new people")
-        val site: String = "NAVER";
+        val site: String = "NAVER"
         val url = "http://localhost:" + port + "/callback/publish/" + site
 
         //when

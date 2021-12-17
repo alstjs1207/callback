@@ -1,8 +1,6 @@
 package com.day1.callback.web
 
 import com.day1.callback.aspect.ChannelsAspect
-import com.day1.callback.web.dto.ImpRequestDto
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -59,7 +57,6 @@ class PubSubControllerTest @Autowired constructor(
             .andReturn()
 
         assertThat(result.response.contentAsString).contains("bus:0:foo")
-
     }
 
     @Test
