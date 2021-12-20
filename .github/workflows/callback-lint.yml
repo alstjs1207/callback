@@ -2,9 +2,11 @@ name: ktlint
 
 on:
     pull_request:
-        paths:
-            - "**/*.kt"
-            - ".github/workflows/callback-lint.yml"
+        branches:
+            - develop
+            - main
+    paths:
+        - "**/*.kt"
 jobs:
     ktlint:
         name: Check Code Quality
