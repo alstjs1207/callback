@@ -1,4 +1,4 @@
-name: kotlin lint
+name: ktlint
 
 on:
     pull_request:
