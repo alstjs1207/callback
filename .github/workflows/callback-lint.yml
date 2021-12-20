@@ -3,7 +3,8 @@ name: ktlint
 on:
     pull_request:
         paths:
-            - 'src/**/*.kt'
+            - "**/*.kt"
+            - ".github/workflows/callback-lint.yml"
 jobs:
     ktlint:
         name: Check Code Quality
