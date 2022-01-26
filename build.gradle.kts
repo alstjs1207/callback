@@ -30,8 +30,6 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:1.12.5")
     //kotlinx
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
-    // implementation("com.pinterest:ktlint:0.43.2")
-
     //jpa
     //implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     //test
