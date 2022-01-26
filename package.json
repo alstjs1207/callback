@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "prettier": "^2.5.1",
-    "prettier-plugin-kotlin": "^2.1.0"
-  }
-}
