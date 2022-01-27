@@ -21,5 +21,4 @@ class SubscribeRunner(
             redisMessageListenerContainer.addMessageListener(redisMessageSubscriber, channel)
         }
     }
-
 }

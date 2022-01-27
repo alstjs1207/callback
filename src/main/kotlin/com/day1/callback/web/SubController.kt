@@ -7,7 +7,6 @@ import com.day1.callback.service.redis.impl.RedisMessageDtoSubscriber
 import com.day1.callback.service.redis.impl.RedisMessageSubscriber
 import lombok.RequiredArgsConstructor
 import mu.KotlinLogging
-import org.springframework.data.redis.listener.ChannelTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.web.bind.annotation.*
 

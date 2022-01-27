@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service
 private val logger = KotlinLogging.logger {}
 
 @Service
-class RedisSubscriber(val channelsAspect: ChannelsAspect,
-                      val redisMessageSubscriber: RedisMessageSubscriber,
-                      val redisMessageListenerContainer: RedisMessageListenerContainer
+class RedisSubscriber(
+    val channelsAspect: ChannelsAspect,
+    val redisMessageSubscriber: RedisMessageSubscriber,
+    val redisMessageListenerContainer: RedisMessageListenerContainer
 ) {
 
     fun startSubscribe() {

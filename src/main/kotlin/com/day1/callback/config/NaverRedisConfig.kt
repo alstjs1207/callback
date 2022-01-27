@@ -1,6 +1,5 @@
 package com.day1.callback.config
 
-
 import com.day1.callback.service.redis.NaverPublisher
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -26,8 +25,8 @@ class NaverRedisConfig() {
     @Value("\${spring.redis.database}")
     private val database: Int = 0
 
-    @Bean( name= ["NaverLettuceConnectionFactory"])
-    fun  nLettuceConnectionFactory(): RedisConnectionFactory {
+    @Bean(name = ["NaverLettuceConnectionFactory"])
+    fun nLettuceConnectionFactory(): RedisConnectionFactory {
         val redisStandaloneConfiguration = RedisStandaloneConfiguration()
         redisStandaloneConfiguration.hostName = redisHost!!
         redisStandaloneConfiguration.port = redisPort
@@ -35,7 +34,7 @@ class NaverRedisConfig() {
         return LettuceConnectionFactory(redisStandaloneConfiguration)
     }
 
-    @Bean( name = ["NaverRedisTemplate"])
+    @Bean(name = ["NaverRedisTemplate"])
     fun nRedisTemplate(): RedisTemplate<String, Any> {
         val template = RedisTemplate<String, Any>()
         template.keySerializer = StringRedisSerializer()
@@ -47,7 +46,7 @@ class NaverRedisConfig() {
         return template
     }
 
-    @Bean( name= ["NaverRedisContainer"])
+    @Bean(name = ["NaverRedisContainer"])
     fun nRedisContainer(): RedisMessageListenerContainer {
         val container = RedisMessageListenerContainer()
         container.setConnectionFactory(nLettuceConnectionFactory())

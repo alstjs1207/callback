@@ -7,11 +7,13 @@ import org.springframework.data.redis.connection.MessageListener
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 
-
 private val logger = KotlinLogging.logger {}
 
 @Service
-class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>, val cloudRunPublisher: CloudRunPublisher): MessageListener {
+class RedisMessageSubscriber(
+    val redisTemplate: RedisTemplate<String, Any>,
+    val cloudRunPublisher: CloudRunPublisher
+) : MessageListener {
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
         val msg = redisTemplate.stringSerializer.deserialize(message.body)
@@ -19,7 +21,7 @@ class RedisMessageSubscriber(val redisTemplate: RedisTemplate<String, Any>, val 
 
         if (channel !== null) {
 
-            if(!msg.equals(channel)) {
+            if (!msg.equals(channel)) {
                 //cloud run으로 전송
                 cloudRunPublisher.sendCloudRun(msg, channel)
                 return
