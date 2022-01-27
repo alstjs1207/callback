@@ -24,8 +24,7 @@ class NaverPublisher(@Resource(name = "NaverRedisTemplate") val nRedisTemplate: 
 
     override fun publisher(topic: ChannelTopic, message: String) {
         logger.info { "naver pub" }
-        nRedisTemplate.convertAndSend(topic.topic, message)
-    }
+        nRedisTemplate.convertAndSend(topic.topic, message)}
 }
 
 class DaumPublisher(@Resource(name = "DaumRedisTemplate") val dRedisTemplate: RedisTemplate<String, Any>) :
